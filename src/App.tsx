@@ -11,7 +11,7 @@ import About from './pages/About';
 import Achievements from './pages/Achievements';
 import BookCall from './components/BookCall';
 import Footer from './components/Footer';
-import CreativeSquares from './components/CreativeSquares';
+import CreativeSquares from './components/CreativeSquares'; 
 import Background from './components/Background';
 import ServiceDetails from './components/ServiceDetails';
 import HireMeDetails from './components/HireMeDetails';

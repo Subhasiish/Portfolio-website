@@ -100,7 +100,11 @@ const NavLink = styled(motion.a)`
   }
 `;
 
-const Navbar: React.FC = () => {
+type NavbarProps = {
+  activePage: string;
+};
+
+const Navbar: React.FC <NavbarProps> = ({ activePage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 

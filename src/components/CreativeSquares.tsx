@@ -1,6 +1,9 @@
 import React from "react";
-
-const CreativeSquares: React.FC = () => {
+type CreativeSquaresProps = {
+    activePage: string;
+  };
+  
+const CreativeSquares: React.FC <CreativeSquaresProps> = ({ activePage }) => {
     return (
         <div>
             <h1>Creative Squares Component</h1>
