@@ -17,19 +17,23 @@ import ServiceDetails from './components/ServiceDetails';
 import HireMeDetails from './components/HireMeDetails';
 import BookCallDetails from './components/BookCallDetails';
 
-const App: React.FC = () => {
+interface AppProps {
+  activePage: string;
+}
+
+const App: React.FC<AppProps> = ({ activePage }) => {
   return (
     <Router>
       <GlobalStyles />
       <Background />
       <CustomCursor />
-      <Navbar activePage="home" />
+      <Navbar activePage={activePage} />
       <Routes>
         <Route path="/" element={
           <main>
             <LandingPage />
             <Portfolio />
-            {/* <CreativeSquares /> */}
+            <CreativeSquares activePage={activePage as string} />
             <Services />
             <About />
             <Achievements />

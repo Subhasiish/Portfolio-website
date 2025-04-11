@@ -113,9 +113,9 @@ const CardsContainer = styled(motion.div)`
 `;
 
 // Fix styled-components typing for `isExpanded`
-const PortfolioCard = styled(motion.div)<{ isExpanded: boolean }>`
+const PortfolioCard = styled(motion.div)<{ isExpanded?: boolean }>` // Make isExpanded optional
   width: 100%;
-  height: ${({ isExpanded }) => (isExpanded ? '550px' : '350px')}; /* Fixed height */
+  height: ${({ isExpanded = false }) => (isExpanded ? '550px' : '350px')}; // Provide default value
   background: rgba(255, 255, 255, 0.03);
   border-radius: 16px;
   overflow: hidden;
@@ -146,7 +146,7 @@ const PortfolioCard = styled(motion.div)<{ isExpanded: boolean }>`
     border-color: rgba(255, 255, 255, 0.1);
     width: 80%; /* Expand to 80% width */
     margin-left: 10%; /* Center the card */
-    height: ${({ isExpanded }: { isExpanded: boolean }) => (isExpanded ? '550px' : '350px')}; /* Slight height increase */
+    height: ${({ isExpanded = false }) => (isExpanded ? '550px' : '350px')}; /* Slight height increase */
     transition: all 0.5s ease-in-out; /* Smooth transition */
   }
   
@@ -255,7 +255,7 @@ const CardTitle = styled.h3`
 `;
 
 // Fix styled-components typing for `isExpanded` in CardDescription
-const CardDescription = styled.p<{ isExpanded: boolean }>`
+const CardDescription = styled.p<{ isExpanded?: boolean }>` // Make isExpanded optional
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   margin-bottom: 12px;
@@ -294,7 +294,7 @@ const CardDescription = styled.p<{ isExpanded: boolean }>`
   }
 
   @media (min-width: 769px) {
-    max-height: ${({ isExpanded }) => (isExpanded ? 'none' : '60px')}; /* Limit height unless expanded */
+    max-height: ${({ isExpanded = false }) => (isExpanded ? 'none' : '60px')}; // Provide default value
     overflow: hidden; /* Hide overflow */
     text-overflow: ellipsis; /* Add ellipsis for truncated text */
     transition: max-height 0.3s ease; /* Smooth transition */
@@ -533,7 +533,7 @@ const Portfolio: React.FC = () => {
             <CardImage 
               src={item.image} 
               alt={item.title}
-              onError={(e) => {
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                 const target = e.target as HTMLImageElement;
                 target.src = '/img/fallback.jpg'; // Replace with a fallback image in the public/img folder
               }}

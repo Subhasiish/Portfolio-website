@@ -116,7 +116,8 @@ const TechTag = styled(motion.span)`
   backdrop-filter: blur(5px);
 `;
 
-const serviceDetails = {
+// Fix typing for services object
+const serviceDetails: Record<string, { title: string; icon: string; description: string; features: string[]; technologies: string[] }> = {
   'web-development': {
     title: 'Web Development',
     icon: '💻',
@@ -198,7 +199,7 @@ const serviceDetails = {
 const ServiceDetails: React.FC = () => {
   const navigate = useNavigate();
   const { serviceId } = useParams<{ serviceId: string }>();
-  const service = serviceDetails[serviceId || ''];
+  const service = serviceDetails[serviceId as string]; // Add type assertion
 
   if (!service) {
     return (
@@ -237,7 +238,7 @@ const ServiceDetails: React.FC = () => {
         </ServiceTitle>
         <ServiceDescription>{service.description}</ServiceDescription>
         <FeaturesList>
-          {service.features.map((feature, index) => (
+          {service.features.map((feature: string, index: number) => ( // Add explicit types
             <FeatureItem
               key={index}
               initial={{ x: -20, opacity: 0 }}
@@ -249,7 +250,7 @@ const ServiceDetails: React.FC = () => {
           ))}
         </FeaturesList>
         <TechStack>
-          {service.technologies.map((tech, index) => (
+          {service.technologies.map((tech: string, index: number) => ( // Add explicit types
             <TechTag
               key={index}
               initial={{ scale: 0, opacity: 0 }}
