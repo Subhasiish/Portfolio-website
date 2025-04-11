@@ -112,9 +112,10 @@ const CardsContainer = styled(motion.div)`
   }
 `;
 
-const PortfolioCard = styled(motion.div)`
+// Fix styled-components typing for `isExpanded`
+const PortfolioCard = styled(motion.div)<{ isExpanded: boolean }>`
   width: 100%;
-  height: 320px; /* Fixed height */
+  height: ${({ isExpanded }) => (isExpanded ? '550px' : '350px')}; /* Fixed height */
   background: rgba(255, 255, 255, 0.03);
   border-radius: 16px;
   overflow: hidden;
@@ -253,7 +254,8 @@ const CardTitle = styled.h3`
   }
 `;
 
-const CardDescription = styled.p`
+// Fix styled-components typing for `isExpanded` in CardDescription
+const CardDescription = styled.p<{ isExpanded: boolean }>`
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   margin-bottom: 12px;
@@ -292,7 +294,7 @@ const CardDescription = styled.p`
   }
 
   @media (min-width: 769px) {
-    max-height: ${({ isExpanded }: { isExpanded: boolean }) => (isExpanded ? 'none' : '60px')}; /* Limit height unless expanded */
+    max-height: ${({ isExpanded }) => (isExpanded ? 'none' : '60px')}; /* Limit height unless expanded */
     overflow: hidden; /* Hide overflow */
     text-overflow: ellipsis; /* Add ellipsis for truncated text */
     transition: max-height 0.3s ease; /* Smooth transition */
@@ -433,18 +435,18 @@ const TechTag = styled.span`
   }
 `;
 
+// Fix `Portfolio` component props and hover handling
 const Portfolio: React.FC = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [expandedCard, setExpandedCard] = useState<number | null>(null); // State to track expanded card
-  const isMobile = window.innerWidth <= 768; // Check if the view is mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768; // Check if the view is mobile
 
   const handleCardHover = (cardId: number | null) => {
-    setHoveredCard(cardId);
+    if (!isMobile) setHoveredCard(cardId);
   };
 
   const handleExpandClick = (cardId: number) => {
-    if (isMobile) return; // Disable onClick for mobile view
-    setExpandedCard(expandedCard === cardId ? null : cardId); // Toggle expanded state
+    if (!isMobile) setExpandedCard(expandedCard === cardId ? null : cardId); // Toggle expanded state
   };
 
   // Animation variants
@@ -523,8 +525,8 @@ const Portfolio: React.FC = () => {
           <PortfolioCard
             key={item.id}
             isExpanded={expandedCard === item.id} // Pass expanded state
-            onMouseEnter={() => !isMobile && handleCardHover(item.id)} // Disable hover on mobile
-            onMouseLeave={() => !isMobile && handleCardHover(null)} // Disable hover on mobile
+            onMouseEnter={() => handleCardHover(item.id)} // Disable hover on mobile
+            onMouseLeave={() => handleCardHover(null)} // Disable hover on mobile
             variants={cardVariants}
             whileHover="hover"
           >
