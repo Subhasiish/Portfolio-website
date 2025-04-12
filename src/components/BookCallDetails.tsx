@@ -125,7 +125,7 @@ const BookCallDetails: React.FC = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-        <BookCallTitle>Book a Call</BookCallTitle>
+        <BookCallTitle>Book a Meet</BookCallTitle>
         <BookCallDescription>
           Schedule a call to share your ideas — let’s explore how we can achieve your goals together.
         </BookCallDescription>
