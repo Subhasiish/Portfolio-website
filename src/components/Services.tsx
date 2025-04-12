@@ -296,6 +296,29 @@ const Services: React.FC = () => {
   const controls = useAnimation();
   const isInView = useInView(sectionRef, { once: true });
 
+  useEffect(() => {
+    // Check if we should scroll to services section
+    const scrollTarget = sessionStorage.getItem('scrollTarget');
+    if (scrollTarget === 'services' && sectionRef.current) {
+      // Clear the scroll target
+      sessionStorage.removeItem('scrollTarget');
+      
+      // Try scrolling multiple times to ensure it works
+      const scrollAttempts = [100, 500, 1000]; // Try at different intervals
+      
+      scrollAttempts.forEach(delay => {
+        setTimeout(() => {
+          if (sectionRef.current) {
+            sectionRef.current.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }, delay);
+      });
+    }
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
