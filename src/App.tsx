@@ -22,6 +22,7 @@ const AppContainer = styled.div`
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  background-color: transparent;
 `;
 
 const MainContent = styled.main`
@@ -29,7 +30,8 @@ const MainContent = styled.main`
   z-index: 1;
   min-height: 100vh;
   width: 100%;
-  padding-top: 60px; // Height of navbar
+  padding-top: 60px;
+  background-color: transparent;
 `;
 
 const StyledSection = styled.section<{ id: string }>`
