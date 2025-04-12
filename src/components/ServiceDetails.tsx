@@ -119,7 +119,7 @@ const TechTag = styled(motion.span)`
 // Fix typing for services object
 const serviceDetails: Record<string, { title: string; icon: string; description: string; features: string[]; technologies: string[] }> = {
   'web-development': {
-    title: 'Web Development',
+    title: 'Web Forge 🔥',
     icon: '💻',
     description: 'I craft modern, responsive web applications that deliver exceptional user experiences, with top-tier performance and security built in. 🚀',
     features: [
@@ -138,7 +138,7 @@ const serviceDetails: Record<string, { title: string; icon: string; description:
     technologies: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'Express', 'Next.js']
   },
   'ui-ux-design': {
-    title: 'UI/UX Design',
+    title: 'Pixel Nest 🎨',
     icon: '🎨',
     description: 'I design intuitive, engaging user interfaces that blend aesthetics with functionality — creating seamless experiences that captivate users and boost engagement. 🎨✨',
     features: [
@@ -157,7 +157,7 @@ const serviceDetails: Record<string, { title: string; icon: string; description:
     technologies: ['Figma', 'Adobe XD', 'Sketch', 'InVision', 'Principle', 'Adobe Creative Suite']
   },
   'mobile-development': {
-    title: 'Mobile Development',
+    title: 'App Nest 🐣📱',
     icon: '📱',
     description: 'I build cross-platform mobile apps that feel native, run smoothly, and scale effortlessly — all from a single, maintainable codebase. 📱🚀',
     features: [
@@ -176,7 +176,7 @@ const serviceDetails: Record<string, { title: string; icon: string; description:
     technologies: ['React Native', 'TypeScript', 'Redux', 'Firebase', 'Node.js', 'MongoDB']
   },
   'backend-development': {
-    title: 'Backend Development',
+    title: 'Cork Stack ⚙️',
     icon: '⚙️',
     description: 'I build robust, scalable, and secure backend systems with best practices in API design, database management, and server architecture. 🔐⚙️',
     features: [
