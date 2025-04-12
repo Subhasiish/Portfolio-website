@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
-type CreativeSquaresProps = {
-  activePage: string;
-};
+interface CreativeSquaresProps {
+  activePage?: string;
+}
 
 const float = keyframes`
   0% {
@@ -42,7 +42,7 @@ const Square = styled.div<{ size: number; top: number; left: number; delay: numb
   border-radius: 10px;
 `;
 
-const CreativeSquares: React.FC<CreativeSquaresProps> = ({ activePage }) => {
+const CreativeSquares: React.FC<CreativeSquaresProps> = () => {
   const [squares, setSquares] = useState<Array<{
     id: number;
     size: number;

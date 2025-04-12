@@ -194,18 +194,6 @@ const CardImage = styled.div<{ $imageUrl: string }>`
     &::after {
       display: none;
     }
-    animation: zoomIn 0.5s ease-in-out;
-
-    @keyframes zoomIn {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
   }
 `;
 

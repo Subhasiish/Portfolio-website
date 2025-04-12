@@ -137,41 +137,31 @@ const slideInAnimation = keyframes`
 `;
 
 // Fix styled-components typing for `isExpanded`
-const PortfolioCard = styled(motion.div)<{ isExpanded?: boolean }>`
+const PortfolioCard = styled(motion.div)<{ $isExpanded?: boolean }>`
   width: 100%;
-  height: ${({ isExpanded = false }) => (isExpanded ? '550px' : '350px')}; // Provide default value
+  height: ${({ $isExpanded = false }) => ($isExpanded ? '550px' : '350px')}; // Provide default value
   background: rgba(255, 255, 255, 0.03);
   border-radius: 16px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.5s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   transform-style: preserve-3d;
   perspective: 1000px;
   transition: height 0.3s ease;
-  pointer-events: auto; /* Ensure pointer events are handled properly */
+  pointer-events: auto;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
-  }
-  
   &:hover {
     transform: translateY(-5px) rotateX(5deg);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 255, 255, 0.1);
-    width: 80%; /* Expand to 80% width */
-    margin-left: 10%; /* Center the card */
-    height: ${({ isExpanded = false }) => (isExpanded ? '550px' : '350px')}; /* Slight height increase */
-    transition: all 0.5s ease-in-out; /* Smooth transition */
+    width: 80%;
+    margin-left: 10%;
+    height: ${({ $isExpanded = false }) => ($isExpanded ? '550px' : '350px')};
+    transition: all 0.5s ease-in-out;
   }
   
   @media (max-width: 768px) {
@@ -309,7 +299,7 @@ const CardTitle = styled.h3`
 `;
 
 // Fix styled-components typing for `isExpanded` in CardDescription
-const CardDescription = styled.p<{ isExpanded?: boolean }>` // Make isExpanded optional
+const CardDescription = styled.p<{ $isExpanded?: boolean }>`
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   margin-bottom: 12px;
@@ -348,10 +338,10 @@ const CardDescription = styled.p<{ isExpanded?: boolean }>` // Make isExpanded o
   }
 
   @media (min-width: 769px) {
-    max-height: ${({ isExpanded = false }) => (isExpanded ? 'none' : '60px')}; // Provide default value
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis for truncated text */
-    transition: max-height 0.3s ease; /* Smooth transition */
+    max-height: ${({ $isExpanded = false }) => ($isExpanded ? 'none' : '60px')};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: max-height 0.3s ease;
   }
 `;
 
@@ -629,7 +619,7 @@ const Portfolio: React.FC = () => {
           <PortfolioCard
             key={item.id}
             data-card-id={item.id}
-            isExpanded={expandedCard === item.id}
+            $isExpanded={expandedCard === item.id}
             className={activeCards.has(item.id) ? 'active' : ''}
             onMouseEnter={() => !isMobile && handleCardHover(item.id)}
             onMouseLeave={() => !isMobile && handleCardHover(null)}
@@ -649,7 +639,7 @@ const Portfolio: React.FC = () => {
             />
             <CardContent>
               <CardTitle>{item.title}</CardTitle>
-              <CardDescription isExpanded={expandedCard === item.id}>
+              <CardDescription $isExpanded={expandedCard === item.id}>
                 {item.description}
               </CardDescription>
               {expandedCard === item.id && (

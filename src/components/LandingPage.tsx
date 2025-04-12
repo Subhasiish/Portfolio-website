@@ -46,6 +46,7 @@ const RightContent = styled(motion.div)`
   
   @media (max-width: 768px) {
     order: 1;
+    // margin-top: 80px;
     margin-bottom: 1rem;
   }
 `;
@@ -132,7 +133,7 @@ const Photo = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  // filter: grayscale(100%) contrast(120%) brightness(90%);
+  loading: lazy;
 `;
 
 const SketchContainer = styled(motion.div)`
@@ -237,6 +238,7 @@ const LandingPage: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [floatingElements, setFloatingElements] = useState<Array<{ top: number; left: number; size: number; delay: number }>>([]);
   const navigate = useNavigate();
+  const [imageError, setImageError] = useState(false);
 
   const springConfig = { damping: 25, stiffness: 700 };
   const x = useSpring(mouseX, springConfig);
@@ -349,12 +351,10 @@ const LandingPage: React.FC = () => {
           }}
         >
           <Photo 
-            src="/img/Profile photo.jpg" 
-            alt="Developer" 
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80";
-            }}
+            src={!imageError ? "/img/Profile photo.jpg" : "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"}
+            alt="Subhasish - Web Developer"
+            onError={() => setImageError(true)}
+            loading="lazy"
           />
         </PhotoContainer>
       </RightContent>

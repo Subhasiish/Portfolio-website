@@ -1,7 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import BookCallDetails from './BookCallDetails';
 
 const BookCallContainer = styled.section`

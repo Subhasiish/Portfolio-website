@@ -1,169 +1,133 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const CursorDot = styled(motion.div)`
-  width: 8px;
-  height: 8px;
-  background-color: white;
-  border-radius: 50%;
+const CursorWrapper = styled.div`
   position: fixed;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 9999;
-  mix-blend-mode: difference;
-  @media (max-width: 768px) {
-    display: none; // Hide custom cursor on mobile phones
-  }
 `;
 
-const CursorRing = styled(motion.div)`
-  width: 40px;
-  height: 40px;
-  border: 1.5px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
+const Cursor = styled(motion.div)`
   position: fixed;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 50%;
   pointer-events: none;
+  mix-blend-mode: difference;
+  transition: all 0.2s ease;
   z-index: 9998;
-  mix-blend-mode: difference;
+
   @media (max-width: 768px) {
-    display: none; // Hide custom cursor on mobile phones
+    display: none;
   }
 `;
 
-const Ripple = styled(motion.div)`
-  width: 20px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
+const Dot = styled(motion.div)`
   position: fixed;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
   pointer-events: none;
-  z-index: 9997;
+  mix-blend-mode: difference;
+  z-index: 9999;
+
   @media (max-width: 768px) {
-    display: none; // Hide custom cursor on mobile phones
+    display: none;
   }
 `;
 
 const CustomCursor: React.FC = () => {
-  const [isHovering, setIsHovering] = useState(false);
-  const [isButtonHovering, setIsButtonHovering] = useState(false);
-  const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
-  
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const ringX = useMotionValue(-100);
-  const ringY = useMotionValue(-100);
-  
-  const springConfig = {
-    dot: { damping: 50, stiffness: 1000, mass: 0.2 },
-    ring: { damping: 30, stiffness: 400, mass: 0.4, restSpeed: 0.5 }
-  };
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const mousePosition = useRef({ x: 0, y: 0 });
+  const cursorPosition = useRef({ x: 0, y: 0 });
+  const dotPosition = useRef({ x: 0, y: 0 });
 
-  const cursorXSpring = useSpring(cursorX, springConfig.dot);
-  const cursorYSpring = useSpring(cursorY, springConfig.dot);
-  const ringXSpring = useSpring(ringX, springConfig.ring);
-  const ringYSpring = useSpring(ringY, springConfig.ring);
-  
   useEffect(() => {
-    let prevMouseX = 0;
-    let prevMouseY = 0;
-    let frameId: number;
-
     const moveCursor = (e: MouseEvent) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-
-      const velocityX = Math.abs(mouseX - prevMouseX);
-      const velocityY = Math.abs(mouseY - prevMouseY);
-      const velocity = velocityX + velocityY;
-
-      const dynamicStiffness = Math.min(2000, 1000 + velocity * 2);
-      
-      cursorX.set(mouseX - 4);
-      cursorY.set(mouseY - 4);
-      
-      frameId = requestAnimationFrame(() => {
-        ringX.set(mouseX - 20);
-        ringY.set(mouseY - 20);
-      });
-
-      prevMouseX = mouseX;
-      prevMouseY = mouseY;
+      mousePosition.current = { x: e.clientX, y: e.clientY };
     };
 
     const handleMouseEnter = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('.square')) {
-        setIsHovering(true);
-      }
-      if (target.closest('button, a, .interactive')) {
-        setIsButtonHovering(true);
+      if (target && cursorRef.current) {
+        const tagName = target.tagName?.toLowerCase() || '';
+        const role = target.getAttribute('role') || '';
+        if (tagName === 'a' || tagName === 'button' || role === 'button') {
+          cursorRef.current.style.transform = 'scale(1.5)';
+        }
       }
     };
 
     const handleMouseLeave = () => {
-      setIsHovering(false);
-      setIsButtonHovering(false);
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = 'scale(1)';
+      }
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
-      setRipples(prev => [...prev, { x: e.clientX, y: e.clientY, id: Date.now() }]);
-      setTimeout(() => {
-        setRipples(prev => prev.filter(ripple => ripple.id !== Date.now()));
-      }, 1000);
+    const animate = () => {
+      if (cursorRef.current && dotRef.current) {
+        // Move circle (faster now)
+        const cursorSpeed = 0.3; // Increased from 0.15
+        cursorPosition.current.x += (mousePosition.current.x - cursorPosition.current.x - 16) * cursorSpeed;
+        cursorPosition.current.y += (mousePosition.current.y - cursorPosition.current.y - 16) * cursorSpeed;
+        
+        cursorRef.current.style.left = `${cursorPosition.current.x}px`;
+        cursorRef.current.style.top = `${cursorPosition.current.y}px`;
+
+        // Make dot follow the circle with delay
+        const dotSpeed = 0.2;
+        const targetX = cursorPosition.current.x + 14; // Center of the circle
+        const targetY = cursorPosition.current.y + 14; // Center of the circle
+        
+        dotPosition.current.x += (targetX - dotPosition.current.x) * dotSpeed;
+        dotPosition.current.y += (targetY - dotPosition.current.y) * dotSpeed;
+        
+        dotRef.current.style.left = `${dotPosition.current.x}px`;
+        dotRef.current.style.top = `${dotPosition.current.y}px`;
+      }
+      requestAnimationFrame(animate);
     };
 
     document.addEventListener('mousemove', moveCursor);
     document.addEventListener('mouseenter', handleMouseEnter, true);
     document.addEventListener('mouseleave', handleMouseLeave, true);
-    document.addEventListener('mousedown', handleMouseDown);
+    
+    // Initialize positions
+    if (cursorRef.current) {
+      cursorPosition.current = { x: mousePosition.current.x - 16, y: mousePosition.current.y - 16 };
+      dotPosition.current = { x: mousePosition.current.x - 4, y: mousePosition.current.y - 4 };
+    }
+    
+    // Start the animation loop
+    const animationFrame = requestAnimationFrame(animate);
 
     return () => {
       document.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mouseenter', handleMouseEnter, true);
       document.removeEventListener('mouseleave', handleMouseLeave, true);
-      document.removeEventListener('mousedown', handleMouseDown);
-      cancelAnimationFrame(frameId);
+      cancelAnimationFrame(animationFrame);
     };
-  }, [cursorX, cursorY, ringX, ringY]);
-  
+  }, []);
+
+  // Hide cursor on mobile devices
+  if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
+    return null;
+  }
+
   return (
-    <>
-      <CursorDot
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          scale: isHovering ? 2 : 1,
-        }}
-        transition={{
-          scale: { type: "spring", damping: 20, stiffness: 300 }
-        }}
-      />
-      <CursorRing
-        style={{
-          x: ringXSpring,
-          y: ringYSpring,
-          scale: isHovering ? 1.8 : 1,
-          opacity: isButtonHovering ? 0.8 : 0.5,
-          borderWidth: isButtonHovering ? '2px' : '1.5px',
-        }}
-        transition={{
-          scale: { type: "spring", damping: 25, stiffness: 200 },
-          opacity: { duration: 0.2 }
-        }}
-      />
-      {ripples.map(ripple => (
-        <Ripple
-          key={ripple.id}
-          initial={{ scale: 0, opacity: 0.8 }}
-          animate={{ scale: 2, opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{
-            x: ripple.x - 10,
-            y: ripple.y - 10,
-          }}
-        />
-      ))}
-    </>
+    <CursorWrapper>
+      <Cursor ref={cursorRef} />
+      <Dot ref={dotRef} />
+    </CursorWrapper>
   );
 };
 
