@@ -41,12 +41,14 @@ const NavContent = styled.div`
 `;
 
 const Logo = styled(motion.div)`
-  font-family: 'Fira Code', monospace;
+  font-family: 'Quicksand', 'Helvetica Neue', sans-serif;
   font-size: 1.5rem;
   color: #808080;
   cursor: pointer;
   flex-shrink: 0;
   margin-right: auto;
+  font-weight: 600;
+  letter-spacing: 1.2px;
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
@@ -242,7 +244,7 @@ const Navbar: React.FC = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          &lt;Subhasish /&gt;
+          &lt;SUBHASISH /&gt;
         </Logo>
         <NavLinks>
           {getNavItems()}
