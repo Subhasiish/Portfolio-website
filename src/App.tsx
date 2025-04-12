@@ -44,7 +44,6 @@ const App: React.FC<AppProps> = ({ activePage }) => {
         <Route path="/services/:serviceId" element={<ServiceDetails />} />
         <Route path="/hire-me" element={<HireMeDetails />} />
         <Route path="/book-call" element={<BookCallDetails />} />
-        <Route path="/book-call-details" element={<BookCallDetails />} /> {/* Removed onClose */}
       </Routes>
     </Router>
   );

@@ -199,12 +199,21 @@ const serviceDetails: Record<string, { title: string; icon: string; description:
 const ServiceDetails: React.FC = () => {
   const navigate = useNavigate();
   const { serviceId } = useParams<{ serviceId: string }>();
-  const service = serviceDetails[serviceId as string]; // Add type assertion
+  const service = serviceDetails[serviceId as string];
+
+  const handleBack = () => {
+    // First set the scroll target
+    sessionStorage.setItem('scrollTarget', 'services');
+    // Then navigate with a small delay to ensure storage is set
+    setTimeout(() => {
+      navigate('/');
+    }, 50);
+  };
 
   if (!service) {
     return (
       <ServiceDetailsContainer>
-        <BackButton onClick={() => navigate('/')}>← Back to Services</BackButton>
+        <BackButton onClick={handleBack}>← Back to Services</BackButton>
         <ContentContainer>
           <ServiceTitle>Service Not Found</ServiceTitle>
           <ServiceDescription>The requested service could not be found.</ServiceDescription>
@@ -221,7 +230,7 @@ const ServiceDetails: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       <BackButton
-        onClick={() => navigate('/')}
+        onClick={handleBack}
         whileHover={{ x: -5 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -238,7 +247,7 @@ const ServiceDetails: React.FC = () => {
         </ServiceTitle>
         <ServiceDescription>{service.description}</ServiceDescription>
         <FeaturesList>
-          {service.features.map((feature: string, index: number) => ( // Add explicit types
+          {service.features.map((feature: string, index: number) => (
             <FeatureItem
               key={index}
               initial={{ x: -20, opacity: 0 }}
@@ -250,7 +259,7 @@ const ServiceDetails: React.FC = () => {
           ))}
         </FeaturesList>
         <TechStack>
-          {service.technologies.map((tech: string, index: number) => ( // Add explicit types
+          {service.technologies.map((tech: string, index: number) => (
             <TechTag
               key={index}
               initial={{ scale: 0, opacity: 0 }}

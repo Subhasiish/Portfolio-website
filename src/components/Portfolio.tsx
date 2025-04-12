@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { keyframes } from 'styled-components';
 
 // Portfolio card data
 const portfolioItems = [
@@ -112,8 +113,31 @@ const CardsContainer = styled(motion.div)`
   }
 `;
 
+const mobileCardAnimation = keyframes`
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+`;
+
+const slideInAnimation = keyframes`
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
 // Fix styled-components typing for `isExpanded`
-const PortfolioCard = styled(motion.div)<{ isExpanded?: boolean }>` // Make isExpanded optional
+const PortfolioCard = styled(motion.div)<{ isExpanded?: boolean }>`
   width: 100%;
   height: ${({ isExpanded = false }) => (isExpanded ? '550px' : '350px')}; // Provide default value
   background: rgba(255, 255, 255, 0.03);
@@ -151,25 +175,49 @@ const PortfolioCard = styled(motion.div)<{ isExpanded?: boolean }>` // Make isEx
   }
   
   @media (max-width: 768px) {
-    height: 490px; /* Fixed height for mobile view */
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transform-style: flat;
-    perspective: none;
-    cursor: pointer;
-    animation: none;
-    transition: none;
-    pointer-events: none; /* Disable all pointer events on mobile view */
+    height: auto;
+    min-height: 450px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    animation: ${mobileCardAnimation} 3s ease-in-out infinite;
+    animation-play-state: paused;
     
-    button {
-      pointer-events: auto; /* Allow pointer events for buttons */
+    &.active {
+      animation-play-state: running;
     }
-    
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:active::after {
+      opacity: 1;
+    }
+
     &:hover {
-      transform: translateY(-5px);
-      height: 320px; /* No height change on hover */
-      width: 100%; /* No width change */
-      margin-left: 0; /* No centering */
+      transform: none;
+      width: 100%;
+      margin-left: 0;
     }
   }
 
@@ -191,8 +239,14 @@ const CardImage = styled.img`
   filter: brightness(0.9) contrast(1.1);
   
   @media (max-width: 768px) {
-    height: 50%;
-    object-position: center;
+    height: 200px;
+    filter: brightness(0.8) contrast(1.1);
+    transition: filter 0.3s ease, transform 0.3s ease;
+
+    ${PortfolioCard}:active & {
+      filter: brightness(1) contrast(1.2);
+      transform: scale(1.05);
+    }
   }
 `;
 
@@ -217,18 +271,18 @@ const CardContent = styled(motion.div)`
   }
   
   @media (max-width: 768px) {
-    position: absolute;
-    transform: none;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.7) 70%, transparent);
-    height: 50%;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.8) 50%,
+      transparent 100%
+    );
+    height: auto;
+    min-height: 250px;
+    padding: 20px;
     opacity: 1;
-    top: 50%;
-    animation: none;
-    transition: none;
+    transform: none;
+    animation: ${slideInAnimation} 0.5s ease-out forwards;
   }
 `;
 
@@ -435,11 +489,61 @@ const TechTag = styled.span`
   }
 `;
 
+const MobileProjectCount = styled.div`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    z-index: 2;
+  }
+`;
+
 // Fix `Portfolio` component props and hover handling
 const Portfolio: React.FC = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [expandedCard, setExpandedCard] = useState<number | null>(null); // State to track expanded card
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768; // Check if the view is mobile
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [activeCards, setActiveCards] = useState<Set<number>>(new Set());
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
+  useEffect(() => {
+    if (isMobile) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const cardId = parseInt(entry.target.getAttribute('data-card-id') || '0');
+            setActiveCards((prev) => {
+              const newSet = new Set(prev);
+              if (entry.isIntersecting) {
+                newSet.add(cardId);
+              } else {
+                newSet.delete(cardId);
+              }
+              return newSet;
+            });
+          });
+        },
+        {
+          threshold: 0.5,
+          rootMargin: '-10% 0px'
+        }
+      );
+
+      document.querySelectorAll('[data-card-id]').forEach((card) => {
+        observer.observe(card);
+      });
+
+      return () => observer.disconnect();
+    }
+  }, [isMobile]);
 
   const handleCardHover = (cardId: number | null) => {
     if (!isMobile) setHoveredCard(cardId);
@@ -521,21 +625,26 @@ const Portfolio: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        {portfolioItems.map((item) => (
+        {portfolioItems.map((item, index) => (
           <PortfolioCard
             key={item.id}
-            isExpanded={expandedCard === item.id} // Pass expanded state
-            onMouseEnter={() => handleCardHover(item.id)} // Disable hover on mobile
-            onMouseLeave={() => handleCardHover(null)} // Disable hover on mobile
+            data-card-id={item.id}
+            isExpanded={expandedCard === item.id}
+            className={activeCards.has(item.id) ? 'active' : ''}
+            onMouseEnter={() => !isMobile && handleCardHover(item.id)}
+            onMouseLeave={() => !isMobile && handleCardHover(null)}
             variants={cardVariants}
-            whileHover="hover"
+            whileHover={!isMobile ? "hover" : undefined}
           >
+            <MobileProjectCount>
+              Project {index + 1}/{portfolioItems.length}
+            </MobileProjectCount>
             <CardImage 
               src={item.image} 
               alt={item.title}
               onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                 const target = e.target as HTMLImageElement;
-                target.src = '/img/fallback.jpg'; // Replace with a fallback image in the public/img folder
+                target.src = '/img/fallback.jpg';
               }}
             />
             <CardContent>
@@ -546,38 +655,39 @@ const Portfolio: React.FC = () => {
               {expandedCard === item.id && (
                 <CardExtendedContent>
                   <CardExtendedText>
-                  I designed and developed the complete website for an edtech company, including a modern, responsive landing page and key user interfaces. 
-                  </CardExtendedText>
-                  <CardExtendedText>
-                  The project was built using HTML, CSS, JavaScript, and Python, ensuring both front-end appeal and back-end functionality. The result was a seamless user experience aligned with the brand’s educational mission.
+                    {item.description}
                   </CardExtendedText>
                 </CardExtendedContent>
               )}
               <TechStack>
                 {item.technologies.map((tech, index) => (
-                  <TechTag key={index}>{tech}</TechTag>
+                  <TechTag 
+                    key={index}
+                    style={{
+                      animationDelay: `${index * 0.1}s`
+                    }}
+                  >
+                    {tech}
+                  </TechTag>
                 ))}
               </TechStack>
               <CardLinks>
-  {/* Conditionally render the "Code" link */}
-  {item.id !== 1 && item.link && (
-    <CardLink href={item.link} target="_blank" rel="noopener noreferrer">
-      <span>Code</span>
-    </CardLink>
-  )}
-
-  {/* Always render the "Demo" link */}
-  {item.demoLink && (
-    <CardLink href={item.demoLink} target="_blank" rel="noopener noreferrer">
-      <span>Demo</span>
-    </CardLink>
-  )}
-
-  {/* Always render the "Show More" button */}
-  <CardLink as="button" onClick={() => handleExpandClick(item.id)}>
-    <span>{expandedCard === item.id ? "Show Less" : "Show More"}</span>
-  </CardLink>
-</CardLinks>
+                {item.id !== 1 && item.link && (
+                  <CardLink href={item.link} target="_blank" rel="noopener noreferrer">
+                    <span>Code</span>
+                  </CardLink>
+                )}
+                {item.demoLink && (
+                  <CardLink href={item.demoLink} target="_blank" rel="noopener noreferrer">
+                    <span>Demo</span>
+                  </CardLink>
+                )}
+                {!isMobile && (
+                  <CardLink as="button" onClick={() => handleExpandClick(item.id)}>
+                    <span>{expandedCard === item.id ? "Show Less" : "Show More"}</span>
+                  </CardLink>
+                )}
+              </CardLinks>
             </CardContent>
           </PortfolioCard>
         ))}
