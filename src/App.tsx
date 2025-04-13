@@ -16,6 +16,7 @@ import Background from './components/Background';
 import ServiceDetails from './components/ServiceDetails';
 import HireMeDetails from './components/HireMeDetails';
 import BookCallDetails from './components/BookCallDetails';
+import { Analytics } from "@vercel/analytics/react"
 
 const AppContainer = styled.div`
   position: relative;
@@ -46,6 +47,7 @@ const StyledSection = styled.section<{ id: string }>`
 const App = () => {
   return (
     <Router>
+    <Analytics />
       <GlobalStyles />
       <AppContainer>
         <Background />
