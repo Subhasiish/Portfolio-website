@@ -36,16 +36,23 @@ const servicesData = [
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
     icon: '⚙️',
     link: '/services/backend-development'
+  },
+  {
+    id: 5,
+    title: 'Digital Marketing',
+    description: 'Driving growth through strategic digital marketing campaigns and data-driven insights. 📈',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    icon: '📊',
+    link: '/services/digital-marketing'
+  },
+  {
+    id: 6,
+    title: 'Website Management',
+    description: 'Ensuring your website runs smoothly with regular updates, maintenance, and optimization. 🔧',
+    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    icon: '🛠️',
+    link: '/services/website-management'
   }
-  // },
-  // {
-  //   id: 5,
-  //   title: 'Hire Me',
-  //   description: 'Robust server-side applications with RESTful APIs and databases.',
-  //   image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-  //   icon: '⚙️',
-  //   link: '/services/Hire-Me'
-  // }
 ];
 
 // Styled components
@@ -84,7 +91,8 @@ const ServicesContainer = styled(motion.div)`
   width: 100%;
   position: relative;
   z-index: 1;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -92,8 +100,14 @@ const ServicesContainer = styled(motion.div)`
   padding: 30px;
   margin: 0 auto;
   max-width: 1400px;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+  }
   
   @media (max-width: 768px) {
     padding: 15px;
@@ -103,11 +117,14 @@ const ServicesContainer = styled(motion.div)`
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     flex-direction: column;
+    overflow: visible;
+    flex-wrap: wrap;
   }
 `;
 
 const ServiceCard = styled(motion.div)`
   min-width: 300px;
+  max-width: 300px;
   height: 400px;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(5px);
@@ -118,6 +135,7 @@ const ServiceCard = styled(motion.div)`
   cursor: pointer;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 
   &:hover {
     transform: translateY(-10px) scale(1.05);
@@ -163,9 +181,10 @@ const CardImage = styled.div<{ $imageUrl: string }>`
   background-image: url(${props => props.$imageUrl});
   background-size: cover;
   background-position: center;
-  opacity: 0.7;
+  opacity: 0;
   z-index: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease;
+  background-color: rgba(0, 0, 0, 0.1);
   
   &::after {
     content: '';
@@ -193,6 +212,35 @@ const CardImage = styled.div<{ $imageUrl: string }>`
     
     &::after {
       display: none;
+    }
+  }
+`;
+
+const ImageLoader = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  
+  &::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
     }
   }
 `;
@@ -283,6 +331,7 @@ const Services: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const isInView = useInView(sectionRef, { once: true });
+  const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     // Check if we should scroll to services section
@@ -325,6 +374,10 @@ const Services: React.FC = () => {
     navigate(link);
   };
 
+  const handleImageLoad = (id: number) => {
+    setLoadedImages(prev => ({ ...prev, [id]: true }));
+  };
+
   return (
     <ServicesSection id="services" ref={sectionRef}>
       <SectionTitle>&lt;Services /&gt;</SectionTitle>
@@ -336,12 +389,20 @@ const Services: React.FC = () => {
         {servicesData.map((service) => (
           <ServiceCard
             key={service.id}
-            onClick={() => handleCardClick(service.link)}
+            variants={itemVariants}
             whileHover={{ scale: 1.05, y: -10 }}
             whileTap={{ scale: 0.95 }}
-            variants={itemVariants}
+            onClick={() => handleCardClick(service.link)}
           >
-            <CardImage $imageUrl={service.image} />
+            <CardImage $imageUrl={service.image} style={{ opacity: loadedImages[service.id] ? 0.7 : 0 }}>
+              {!loadedImages[service.id] && <ImageLoader />}
+              <img 
+                src={service.image} 
+                alt={service.title}
+                style={{ display: 'none' }}
+                onLoad={() => handleImageLoad(service.id)}
+              />
+            </CardImage>
             <CardContent>
               <CardTitle>
                 <ServiceIcon>{service.icon}</ServiceIcon>

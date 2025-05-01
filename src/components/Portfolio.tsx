@@ -11,7 +11,7 @@ const portfolioItems = [
     description: 'Built a responsive edtech website with a dynamic landing page using HTML, CSS, JavaScript, and Python.',
     image: '/img/Project1.png',
     // link: 'https://github.com/yourusername/project1',
-    demoLink: 'https://talentlad.in/',
+    // demoLink: 'https://talentlad.in/',
     technologies: ['HTML5', 'Css', 'Node.js', 'MongoDB', 'Javascript', 'Python']
   },
   {
