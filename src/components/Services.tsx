@@ -284,16 +284,18 @@ const CardTitle = styled.h3`
   gap: 10px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   letter-spacing: -0.5px;
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    gap: 0;
+    justify-content: flex-start;
+  }
 `;
 
 const ServiceIcon = styled.span`
   font-size: 1.8rem;
   display: inline-block;
   @media (max-width: 768px) {
-    font-size: 2rem;
-    margin: 0;
-    padding: 0;
-    opacity: 0.9;
+    display: none;
   }
 `;
 
