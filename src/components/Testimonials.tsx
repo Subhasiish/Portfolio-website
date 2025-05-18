@@ -10,11 +10,18 @@ const Section = styled.section`
   align-items: center;
 `;
 
-const Title = styled.h2`
-  font-size: 2rem;
-  color: #fff;
-  margin-bottom: 40px;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+const Title = styled.h1`
+  font-size: 3rem;
+  color: #808080;
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: 'Fira Code', monospace;
+  text-shadow: 0 0 10px rgba(128, 128, 128, 0.3);
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+  }
 `;
 
 const TestimonialsGrid = styled.div`
@@ -43,7 +50,7 @@ const Author = styled.div`
 
 const Testimonials: React.FC = () => (
   <Section id="testimonials">
-    <Title>Testimonials</Title>
+    <Title>&lt;Testimonials /&gt;</Title>
     <TestimonialsGrid>
       <TestimonialCard>
         "Working with Subhasish was a fantastic experience. The website exceeded our expectations!"

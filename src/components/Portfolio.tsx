@@ -75,22 +75,17 @@ const PortfolioSection = styled.section`
   background: transparent;
 `;
 
-const SectionTitle = styled(motion.h2)`
+const SectionTitle = styled(motion.h1)`
   font-size: 3rem;
-  color: color: #a0a0a0;; /* Updated color to match Services title */
-  font-family:'JetBrains Mono', 'Fira Code', 'Consolas', monospace; /* Updated font family */
-  margin-bottom: 50px;
+  color: #808080;
+  margin-bottom: 30px;
   text-align: center;
-  font-weight: bold; /* Added bold font */
-  text-transform: uppercase; /* Added uppercase transformation */
-  letter-spacing: 2px; /* Added letter spacing */
-  z-index: 1;
-  position: relative;
-  text-shadow: 0 0 15px rgba(255, 111, 97, 0.5); /* Updated shadow to match color */
-  
+  font-family: 'Fira Code', monospace;
+  text-shadow: 0 0 10px rgba(128, 128, 128, 0.3);
+
   @media (max-width: 768px) {
-    font-size: 2rem; /* Adjusted font size for smaller screens */
-    text-shadow: none; /* Removed shadow for smaller screens */
+    font-size: 2.2rem;
+    margin-bottom: 20px;
   }
 `;
 
