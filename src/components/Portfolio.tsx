@@ -11,7 +11,7 @@ const portfolioItems = [
     description: 'Built a responsive edtech website with a dynamic landing page using HTML, CSS, JavaScript, and Python.',
     image: '/img/Project1.png',
     // link: 'https://github.com/yourusername/project1',
-    // demoLink: 'https://talentlad.in/',
+    demoLink: 'https://subhasishproject1.vercel.app/',
     technologies: ['HTML5', 'Css', 'Node.js', 'MongoDB', 'Javascript', 'Python']
   },
   {
@@ -25,11 +25,11 @@ const portfolioItems = [
   },
   {
     id: 3,
-    title: 'Personal-portfolio-website',
+    title: 'Personal-portfolio-website (Pc-Only view)',
     description: 'Showcasing my passion for web development, this portfolio blends modern design with personal flair, built using HTML5, CSS, and JavaScript.',
     image: '/img/Project3.png',
     link: 'https://github.com/Subhasiish/personal-portfolio-website.git',
-    demoLink: 'project-3-subhasish-gnkk.vercel.app',
+    demoLink: 'https://project-3-subhasish-gnkk.vercel.app/',
     technologies: ['HTML5', 'Css', 'Javascript', 'Gsap']
   },
   // {
