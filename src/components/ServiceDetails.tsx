@@ -98,8 +98,7 @@ const ServiceDescription = styled(motion.p)`
   margin-bottom: 40px;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
-    margin-bottom: 30px;
+    display: none;
   }
 `;
 
@@ -244,6 +243,20 @@ const serviceDetails: Record<string, { title: string; icon: string; description:
       '🔧 Technical support and troubleshooting',
     ],
     technologies: ['WordPress', 'Shopify', 'Wix', 'Squarespace', 'Google Analytics', 'Cloudflare']
+  },
+  'ai-integration': {
+    title: 'AI Integration 🤖',
+    icon: '🤖',
+    description: 'Empowering your business with intelligent automation, chatbots, and data-driven insights using the latest in AI technology.',
+    features: [
+      '💬 AI-powered chatbots and virtual assistants',
+      '📈 Predictive analytics and data insights',
+      '🤖 Intelligent automation of business processes',
+      '🧠 Natural language processing (NLP)',
+      '🔗 Integration with OpenAI, Dialogflow, and more',
+      '⚡ Custom AI solutions tailored to your needs'
+    ],
+    technologies: ['OpenAI', 'Python', 'TensorFlow', 'Dialogflow', 'Node.js', 'REST APIs']
   }
 };
 

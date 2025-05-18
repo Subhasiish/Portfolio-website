@@ -52,6 +52,14 @@ const servicesData = [
     image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
     icon: '🛠️',
     link: '/services/website-management'
+  },
+  {
+    id: 7,
+    title: 'AI Integration',
+    description: 'Empowering your business with intelligent automation, chatbots, and data-driven insights using the latest in AI technology. 🤖',
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    icon: '🤖',
+    link: '/services/ai-integration'
   }
 ];
 
@@ -79,10 +87,6 @@ const SectionTitle = styled.h2`
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   letter-spacing: -1px;
-  
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
 const ServicesContainer = styled(motion.div)`
@@ -280,18 +284,12 @@ const CardTitle = styled.h3`
   gap: 10px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   letter-spacing: -0.5px;
-  
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
 const ServiceIcon = styled.span`
   font-size: 1.8rem;
   display: inline-block;
-  
   @media (max-width: 768px) {
-  display: none;
     font-size: 2rem;
     margin: 0;
     padding: 0;
@@ -310,19 +308,8 @@ const CardDescription = styled.p`
   line-height: 1.4;
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   letter-spacing: -0.3px;
-  
   @media (max-width: 768px) {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    opacity: 0.85;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 2.8em;
-    width: 100%;
-    color: #b0b0b0;
+    display: none;
   }
 `;
 
