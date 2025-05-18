@@ -9,6 +9,8 @@ const mainSections = [
   'services',
   'about',
   'achievements',
+  'testimonials',
+  // 'blog',
   'contact'
 ] as const;
 type Section = typeof mainSections[number];

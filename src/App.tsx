@@ -16,7 +16,11 @@ import Background from './components/Background';
 import ServiceDetails from './components/ServiceDetails';
 import HireMeDetails from './components/HireMeDetails';
 import BookCallDetails from './components/BookCallDetails';
+// import Blog from './pages/Blog';
+import Testimonials from './components/Testimonials';
 import { Analytics } from "@vercel/analytics/react"
+import { ThemeProvider } from 'styled-components';
+import { darkTheme } from './styles/theme';
 
 const AppContainer = styled.div`
   position: relative;
@@ -46,44 +50,53 @@ const StyledSection = styled.section<{ id: string }>`
 
 const App = () => {
   return (
-    <Router>
-    <Analytics />
-      <GlobalStyles />
-      <AppContainer>
-        <Background />
-        <CustomCursor />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={
-            <MainContent>
-              <StyledSection id="home">
-                <LandingPage />
-              </StyledSection>
-              <StyledSection id="portfolio">
-                <Portfolio />
-              </StyledSection>
-              <CreativeSquares />
-              <StyledSection id="services">
-                <Services />
-              </StyledSection>
-              <StyledSection id="about">
-                <About />
-              </StyledSection>
-              <StyledSection id="achievements">
-                <Achievements />
-              </StyledSection>
-              <StyledSection id="contact">
-                <BookCall />
-              </StyledSection>
-              <Footer />
-            </MainContent>
-          } />
-          <Route path="/services/:serviceId" element={<ServiceDetails />} />
-          <Route path="/hire-me" element={<HireMeDetails />} />
-          <Route path="/book-call" element={<BookCallDetails />} />
-        </Routes>
-      </AppContainer>
-    </Router>
+    <ThemeProvider theme={darkTheme}>
+      <Router>
+        <Analytics />
+        <GlobalStyles />
+        <AppContainer>
+          <Background />
+          <CustomCursor />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={
+              <MainContent>
+                <StyledSection id="home">
+                  <LandingPage />
+                </StyledSection>
+                <StyledSection id="portfolio">
+                  <Portfolio />
+                </StyledSection>
+                <CreativeSquares />
+                <StyledSection id="services">
+                  <Services />
+                </StyledSection>
+                <StyledSection id="about">
+                  <About />
+                </StyledSection>
+                <StyledSection id="achievements">
+                  <Achievements />
+                </StyledSection>
+                <StyledSection id="testimonials">
+                  <Testimonials />
+                </StyledSection>
+                <StyledSection id="contact">
+                  <BookCall />
+                </StyledSection>
+                {/* <StyledSection id="blog">
+                  <Blog />
+                </StyledSection> */}
+                <Footer />
+              </MainContent>
+            } />
+            <Route path="/services/:serviceId" element={<ServiceDetails />} />
+            <Route path="/hire-me" element={<HireMeDetails />} />
+            <Route path="/book-call" element={<BookCallDetails />} />
+            {/* <Route path="/blog" element={<Blog />} /> */}
+          </Routes>
+        </AppContainer>
+      </Router>
+    </ThemeProvider>
   );
 };
 
