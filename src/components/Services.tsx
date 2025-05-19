@@ -369,7 +369,7 @@ const Services: React.FC = () => {
 
   return (
     <ServicesSection id="services" ref={sectionRef}>
-      <SectionTitle>&lt;Services /&gt;</SectionTitle>
+      <SectionTitle>&lt;Services/&gt;</SectionTitle>
       <ServicesContainer
         variants={containerVariants}
         initial="hidden"
