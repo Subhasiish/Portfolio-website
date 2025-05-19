@@ -50,7 +50,7 @@ const Author = styled.div`
 
 const Testimonials: React.FC = () => (
   <Section id="testimonials">
-    <Title>&lt;Testimonials /&gt;</Title>
+    <Title>&lt;Testimonials/&gt;</Title>
     <TestimonialsGrid>
       <TestimonialCard>
         "Working with Subhasish was a fantastic experience. The website exceeded our expectations!"
