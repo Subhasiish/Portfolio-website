@@ -223,15 +223,19 @@ const Navbar: React.FC = () => {
   };
 
   const getNavItems = () => {
-    return mainSections.map((section) => (
-      <NavItem
-        key={section}
-        $active={activeSection === section}
-        onClick={() => scrollToSection(section)}
-      >
-        {section.charAt(0).toUpperCase() + section.slice(1)}
-      </NavItem>
-    ));
+    return mainSections.map((section) => {
+      const displayName = section === 'services' ? 'Proficiency' : section.charAt(0).toUpperCase() + section.slice(1);
+
+      return (
+        <NavItem
+          key={section}
+          $active={activeSection === section}
+          onClick={() => scrollToSection(section)}
+        >
+          {displayName}
+        </NavItem>
+      );
+    });
   };
 
   return (

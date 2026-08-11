@@ -109,7 +109,7 @@ const Description = styled.div`
 const About: React.FC = () => {
   return (
     <AboutContainer id="about">
-      <Title>&lt;About /&gt;</Title>
+      <Title>&lt;About/&gt;</Title>
       <ContentWrapper
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

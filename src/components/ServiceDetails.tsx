@@ -285,7 +285,7 @@ const ServiceDetails: React.FC = () => {
   if (!service) {
     return (
       <ServiceDetailsContainer>
-        <BackButton onClick={handleBack}>← Back to Services</BackButton>
+        <BackButton onClick={handleBack}>← Back to Proficiency</BackButton>
         <ContentContainer>
           <ServiceTitle>Service Not Found</ServiceTitle>
           <ServiceDescription>The requested service could not be found.</ServiceDescription>
@@ -309,7 +309,7 @@ const ServiceDetails: React.FC = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-        ← Back to Services
+        ← Back to Proficiency
       </BackButton>
       <ContentContainer
         initial={{ y: 20, opacity: 0 }}

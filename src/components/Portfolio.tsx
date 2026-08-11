@@ -603,7 +603,7 @@ const Portfolio: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        &lt;Portfolio /&gt;
+        &lt;Projects/&gt;
       </SectionTitle>
       <CardsContainer
         variants={containerVariants}
