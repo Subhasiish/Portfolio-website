@@ -405,7 +405,7 @@ const CardLinks = styled.div`
   }
 `;
 
-const CardLink = styled.a`
+const CardLink = styled.button`
   color: white;
   text-decoration: none;
   font-size: 0.9rem;
@@ -421,6 +421,8 @@ const CardLink = styled.a`
   position: relative;
   z-index: 3;
   pointer-events: auto;
+  cursor: pointer;
+  font-family: inherit;
   
   &:hover {
     background: rgba(255, 255, 255, 0.15);
@@ -550,9 +552,12 @@ const Portfolio: React.FC = () => {
     if (!isMobile) setExpandedCard(expandedCard === cardId ? null : cardId); // Toggle expanded state
   };
 
-  const handleExternalLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, url: string) => {
-    event.preventDefault();
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const handleExternalLinkClick = (event: React.MouseEvent<HTMLButtonElement>, url: string) => {
+    event.stopPropagation();
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (!newWindow) {
+      window.location.href = url;
+    }
   };
 
   // Animation variants
@@ -676,9 +681,7 @@ const Portfolio: React.FC = () => {
               <CardLinks>
                 {item.id !== 1 && item.id !== 4 && item.link && (
                   <CardLink
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    type="button"
                     onClick={(event) => handleExternalLinkClick(event, item.link)}
                   >
                     <span>Code</span>
@@ -686,16 +689,14 @@ const Portfolio: React.FC = () => {
                 )}
                 {(item.id === 2 || item.demoLink) && (
                   <CardLink
-                    href={item.demoLink || 'https://shuuvoratech.com/ai/route-finder'}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    type="button"
                     onClick={(event) => handleExternalLinkClick(event, item.demoLink || 'https://shuuvoratech.com/ai/route-finder')}
                   >
                     <span>Demo</span>
                   </CardLink>
                 )}
                 {!isMobile && (
-                  <CardLink as="button" onClick={() => handleExpandClick(item.id)}>
+                  <CardLink type="button" onClick={() => handleExpandClick(item.id)}>
                     <span>{expandedCard === item.id ? "Show Less" : "Show More"}</span>
                   </CardLink>
                 )}
