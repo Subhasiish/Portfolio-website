@@ -32,6 +32,15 @@ const portfolioItems = [
     demoLink: 'https://project-3-subhasish-gnkk.vercel.app/',
     technologies: ['HTML5', 'Css', 'Javascript', 'Gsap']
   },
+  {
+    id: 4,
+    title: 'My Company',
+    description: 'A company website project built for Shuuvora Tech with a modern, professional online presence.',
+    image: '/img/Shuuvora.png',
+    link: 'https://shuuvoratech.com/',
+    demoLink: 'https://shuuvoratech.com/',
+    technologies: ['React', 'TypeScript', 'Styled Components', 'Vite']
+  },
   // {
   //   id: 4,
   //   title: 'Social Media Dashboard',
