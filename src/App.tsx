@@ -18,6 +18,11 @@ import HireMeDetails from './components/HireMeDetails';
 import BookCallDetails from './components/BookCallDetails';
 // import Blog from './pages/Blog';
 import Testimonials from './components/Testimonials';
+import Archive from './pages/Archive';
+import Photography from './pages/archive/Photography';
+import Filmmaking from './pages/archive/Filmmaking';
+import Travel from './pages/archive/Travel';
+import Milestones from './pages/archive/Milestones';
 import { Analytics } from "@vercel/analytics/react"
 import { ThemeProvider } from 'styled-components';
 import { darkTheme } from './styles/theme';
@@ -92,6 +97,11 @@ const App = () => {
             <Route path="/services/:serviceId" element={<ServiceDetails />} />
             <Route path="/hire-me" element={<HireMeDetails />} />
             <Route path="/book-call" element={<BookCallDetails />} />
+            <Route path="/archive" element={<Archive />} />
+            <Route path="/archive/photography" element={<Photography />} />
+            <Route path="/archive/filmmaking" element={<Filmmaking />} />
+            <Route path="/archive/travel" element={<Travel />} />
+            <Route path="/archive/achievements" element={<Milestones />} />
             {/* <Route path="/blog" element={<Blog />} /> */}
           </Routes>
         </AppContainer>
