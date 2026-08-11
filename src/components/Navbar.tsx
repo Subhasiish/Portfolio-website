@@ -152,6 +152,9 @@ const NavItem = styled.a<{ $active: boolean }>`
 
 const ArchiveMenuWrapper = styled.div`
   position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 const ArchiveTrigger = styled.button<{ $active: boolean }>`
@@ -164,6 +167,9 @@ const ArchiveTrigger = styled.button<{ $active: boolean }>`
   font-size: 1rem;
   position: relative;
   transition: color 0.3s ease;
+  display: block;
+  width: 100%;
+  text-align: center;
 
   &::after {
     content: '';
@@ -379,6 +385,7 @@ const Navbar: React.FC = () => {
 
   const desktopNavSections = mainSections.slice(0, 4);
   const desktopTrailingSections = mainSections.slice(4);
+  const mobileNavOrder: Array<Section | 'archive'> = ['home', 'portfolio', 'services', 'about', 'archive', 'testimonials', 'contact'];
 
   return (
     <Nav
@@ -506,39 +513,38 @@ const Navbar: React.FC = () => {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
         >
-          {getNavItems()}
-          <ArchiveMenuWrapper>
-            <ArchiveTrigger
-              $active={location.pathname.startsWith('/archive')}
-              onClick={() => {
-                setIsArchiveOpen((prev) => !prev);
-              }}
-              aria-expanded={isArchiveOpen}
-            >
-              Archive
-            </ArchiveTrigger>
-            <AnimatePresence>
-              {isArchiveOpen && (
-                <ArchiveDropdown
-                  initial={{ opacity: 0, y: -6, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
-                  transition={{ duration: 0.2, ease: 'easeOut' }}
-                >
-                  <DropdownTitle>ARCHIVE</DropdownTitle>
-                  {archiveItems.map((item) => (
-                    <DropdownItem
-                      key={item.path}
-                      $active={location.pathname === item.path}
-                      onClick={() => handleArchiveNavigate(item.path)}
-                    >
-                      {item.title}
-                    </DropdownItem>
-                  ))}
-                </ArchiveDropdown>
-              )}
-            </AnimatePresence>
-          </ArchiveMenuWrapper>
+          {mobileNavOrder.map((item) => {
+            if (item === 'archive') {
+              return (
+                <ArchiveMenuWrapper key="archive-mobile">
+                  <ArchiveTrigger
+                    $active={location.pathname.startsWith('/archive')}
+                    onClick={() => {
+                      navigate('/archive');
+                      setIsArchiveOpen(false);
+                      setIsMenuOpen(false);
+                    }}
+                    aria-expanded={isArchiveOpen}
+                  >
+                    Archive
+                  </ArchiveTrigger>
+                </ArchiveMenuWrapper>
+              );
+            }
+
+            const section = item as Section;
+            const displayName = section === 'services' ? 'Proficiency' : section.charAt(0).toUpperCase() + section.slice(1);
+
+            return (
+              <NavItem
+                key={section}
+                $active={activeSection === section}
+                onClick={() => scrollToSection(section)}
+              >
+                {displayName}
+              </NavItem>
+            );
+          })}
         </MobileMenu>
       )}
     </Nav>
