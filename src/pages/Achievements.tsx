@@ -14,15 +14,26 @@ const AchievementsContainer = styled.section`
   overflow: hidden;
   background: transparent;
   scroll-margin-top: 60px;
+
+  @media (max-width: 768px) {
+    padding: 80px 16px 40px;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 3rem;
+  font-size: clamp(2rem, 6vw, 3rem);
   color: #a0a0a0;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   text-align: center;
-  font family:'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  line-height: 1.2;
+  padding: 0 12px;
+
+  @media (max-width: 768px) {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+    margin-bottom: 24px;
+  }
 `;
 
 const CardsContainer = styled.div`

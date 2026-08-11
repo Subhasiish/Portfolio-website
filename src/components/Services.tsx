@@ -78,15 +78,23 @@ const ServicesSection = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 3rem;
+  font-size: clamp(2rem, 6vw, 3rem);
   color: #a0a0a0;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   text-align: center;
   z-index: 1;
   position: relative;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   letter-spacing: -1px;
+  line-height: 1.2;
+  padding: 0 16px;
+
+  @media (max-width: 768px) {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+    margin-bottom: 24px;
+    padding: 0 12px;
+  }
 `;
 
 const ServicesContainer = styled(motion.div)`
