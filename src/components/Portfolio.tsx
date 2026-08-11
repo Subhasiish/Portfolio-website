@@ -20,7 +20,7 @@ const portfolioItems = [
     description: 'A real-time location tracking app using Node.js, Express, Socket.io, and Leaflet, built for scalable, GPS-based monitoring across industries.',
     image: '/img/Project2.png',
     link: 'https://github.com/Subhasiish/Real-time-tracking-app.git',
-    // demoLink: 'https://project2-demo.com',
+    demoLink: 'https://shuuvoratech.com/ai/route-finder',
     technologies: ['Next.js', 'Nodejs', 'Socket.io', 'Express', 'API Integration']
   },
   {
@@ -409,7 +409,7 @@ const CardLink = styled.a`
   color: white;
   text-decoration: none;
   font-size: 0.9rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
   transition: all 0.3s ease;
@@ -418,6 +418,9 @@ const CardLink = styled.a`
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
   
   &:hover {
     background: rgba(255, 255, 255, 0.15);
@@ -547,6 +550,11 @@ const Portfolio: React.FC = () => {
     if (!isMobile) setExpandedCard(expandedCard === cardId ? null : cardId); // Toggle expanded state
   };
 
+  const handleExternalLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, url: string) => {
+    event.preventDefault();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   // Animation variants
   const titleVariants = {
     hidden: { 
@@ -667,12 +675,22 @@ const Portfolio: React.FC = () => {
               </TechStack>
               <CardLinks>
                 {item.id !== 1 && item.id !== 4 && item.link && (
-                  <CardLink href={item.link} target="_blank" rel="noopener noreferrer">
+                  <CardLink
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => handleExternalLinkClick(event, item.link)}
+                  >
                     <span>Code</span>
                   </CardLink>
                 )}
-                {item.demoLink && (
-                  <CardLink href={item.demoLink} target="_blank" rel="noopener noreferrer">
+                {(item.id === 2 || item.demoLink) && (
+                  <CardLink
+                    href={item.demoLink || 'https://shuuvoratech.com/ai/route-finder'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => handleExternalLinkClick(event, item.demoLink || 'https://shuuvoratech.com/ai/route-finder')}
+                  >
                     <span>Demo</span>
                   </CardLink>
                 )}
