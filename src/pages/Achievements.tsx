@@ -89,7 +89,11 @@ const Achievements: React.FC = () => {
 
   return (
     <AchievementsContainer id="achievements">
+<<<<<<< HEAD
       <Title>&lt;Achievements/&gt;</Title>
+=======
+      <Title>&lt;Secured/&gt;</Title>
+>>>>>>> 74dc12930ece982e235cfab87d60ebfdab7918ae
       <CardsContainer>
         {metrics.map((metric, index) => (
           <MetricCard
