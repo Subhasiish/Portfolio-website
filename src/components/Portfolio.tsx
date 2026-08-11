@@ -666,7 +666,7 @@ const Portfolio: React.FC = () => {
                 ))}
               </TechStack>
               <CardLinks>
-                {item.id !== 1 && item.link && (
+                {item.id !== 1 && item.id !== 4 && item.link && (
                   <CardLink href={item.link} target="_blank" rel="noopener noreferrer">
                     <span>Code</span>
                   </CardLink>
